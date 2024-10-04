@@ -28,4 +28,6 @@ public class GiocoDaTavolo extends Gioco {
                 ", Anno: " + getAnnoPubblicazione() + ", Prezzo: €" + getPrezzo() +
                 ", Numero Giocatori: " + numeroGiocatori + ", Durata Media: " + durataMedia + " minuti");
     }
+
+
 }

@@ -30,6 +30,7 @@ public class Application {
             System.out.println("2: Visualizza giochi");
             System.out.println("3: Cerca un gioco per id");
             System.out.println("4:Cerca un gioco per prezzo");
+            System.out.println("5: cerca un gioco per numero di giocatori");
             System.out.println("0: Esci");
             int scelta = scanner.nextInt();
             scanner.nextLine();
@@ -44,6 +45,8 @@ public class Application {
                 cercaGiocoPerId();
             } else if (scelta == 4) {
                 cercaGiocoPerPrezzo();
+            } else if (scelta == 5) {
+                cercaGiocoDaTavoloPerGiocatori();
             } else {
                 System.out.println("Opazione non valida.");
             }
@@ -159,6 +162,24 @@ public class Application {
             System.out.println("Nessun gioco trovato von prezzo inferiore a " + prezzoMax);
         } else {
             System.out.println("Giochi trovati von prezzo inferiore a " + prezzoMax + ": ");
+            for (Gioco gioco : giochiTrovati) {
+                gioco.descrizione();
+            }
+        }
+    }
+
+    private static void cercaGiocoDaTavoloPerGiocatori() {
+        System.out.println("Inserisci il numero massimo di giocatori: ");
+        int numGiocatoriMax = scanner.nextInt();
+
+        List<Gioco> giochiTrovati = giochi.stream()
+                .filter(gioco -> gioco instanceof GiocoDaTavolo && ((GiocoDaTavolo) gioco).getNumeroGiocatori() <= numGiocatoriMax)
+                .toList();
+
+        if (giochiTrovati.isEmpty()) {
+            System.out.println("Nessun gioco da tavolo trovato con max " + numGiocatoriMax);
+        } else {
+            System.out.println("giochi da tavolo trovati con mac giocaotri " + numGiocatoriMax + ": ");
             for (Gioco gioco : giochiTrovati) {
                 gioco.descrizione();
             }
