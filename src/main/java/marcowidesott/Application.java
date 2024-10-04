@@ -29,6 +29,7 @@ public class Application {
             System.out.println("1: Aggiungi un gioco");
             System.out.println("2: Visualizza giochi");
             System.out.println("3: Cerca un gioco per id");
+            System.out.println("4:Cerca un gioco per prezzo");
             System.out.println("0: Esci");
             int scelta = scanner.nextInt();
             scanner.nextLine();
@@ -41,6 +42,8 @@ public class Application {
                 visualizzaGiochi();
             } else if (scelta == 3) {
                 cercaGiocoPerId();
+            } else if (scelta == 4) {
+                cercaGiocoPerPrezzo();
             } else {
                 System.out.println("Opazione non valida.");
             }
@@ -141,6 +144,24 @@ public class Application {
             giocotrovato.get().descrizione();
         } else {
             System.out.println("Nessun gioco trovato con id: " + idRicerca);
+        }
+    }
+
+    public static void cercaGiocoPerPrezzo() {
+        System.out.println("Inserisci il prezzo massimo: ");
+        double prezzoMax = scanner.nextDouble();
+
+        List<Gioco> giochiTrovati = giochi.stream()
+                .filter(gioco -> gioco.getPrezzo() < prezzoMax)
+                .toList();
+
+        if (giochiTrovati.isEmpty()) {
+            System.out.println("Nessun gioco trovato von prezzo inferiore a " + prezzoMax);
+        } else {
+            System.out.println("Giochi trovati von prezzo inferiore a " + prezzoMax + ": ");
+            for (Gioco gioco : giochiTrovati) {
+                gioco.descrizione();
+            }
         }
     }
 }
