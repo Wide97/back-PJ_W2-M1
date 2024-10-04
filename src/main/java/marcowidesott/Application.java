@@ -35,6 +35,7 @@ public class Application {
             System.out.println("5: cerca un gioco per numero di giocatori");
             System.out.println("6: rimuovi gioco");
             System.out.println("7: Aggiorna gioco");
+            System.out.println("8: Mostra statistiche collezione");
             System.out.println("0: Esci");
             int scelta = scanner.nextInt();
             scanner.nextLine();
@@ -55,6 +56,8 @@ public class Application {
                 rimuoviGioco();
             } else if (scelta == 7) {
                 aggiornaGioco();
+            } else if (scelta == 8) {
+                mostraStatistiche();
             } else {
                 System.out.println("Opazione non valida.");
             }
@@ -254,7 +257,7 @@ public class Application {
             System.out.println("Inserisci l' id del gioco da modificare: ");
             int idDaAggiornare = scanner.nextInt();
 
-            Optional<Gioco> giocoOptional = giochi.stream()
+            Optional<Gioco> giocoOptional = giochi.stream()//uso optional per gestire eventualità di non presenza del gioco
                     .filter(gioco -> gioco.getId() == idDaAggiornare)
                     .findFirst();
 
@@ -313,6 +316,32 @@ public class Application {
             System.out.println("Errore: Genere non valido. Assicurati di inserire un genere corretto.");
         } catch (Exception e) {
             System.out.println("Si è verificato un errore imprevisto: " + e.getMessage());
+        }
+    }
+
+    private static void mostraStatistiche() {
+        try {
+            long numeroVideogiochi = giochi.stream()
+                    .filter(gioco -> gioco instanceof Videogioco)
+                    .count();
+            long numeroGiochiDaTavolo = giochi.stream()
+                    .filter(gioco -> gioco instanceof GiocoDaTavolo)
+                    .count();
+            Optional<Gioco> giocoPiuCaro = giochi.stream()
+                    .max(Comparator.comparingDouble(Gioco::getPrezzo));//trovato online. trova il prezzo più alto nello stream
+
+            double mediaPrezzi = giochi.stream()
+                    .mapToDouble(Gioco::getPrezzo)
+                    .average()
+                    .orElse(0.0);
+
+            System.out.println("Statistiche della collezione ");
+            System.out.println("Numero di videogiochi: " + numeroVideogiochi);
+            System.out.println("Numero di giochi da tavolo: " + numeroGiochiDaTavolo);
+            giocoPiuCaro.ifPresent(gioco -> System.out.println("Gioco più caro: " + gioco.getTitolo() + " " + gioco.getPrezzo() + " eur."));
+            System.out.println("Prezzo medio dei giochi: " + mediaPrezzi + " eur");
+        } catch (Exception e) {
+            System.out.println("Errore nel calcolo delle statistiche: " + e.getMessage());
         }
     }
 }
