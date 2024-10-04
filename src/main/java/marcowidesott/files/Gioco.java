@@ -1,7 +1,7 @@
 package marcowidesott.files;
 
 public abstract class Gioco {
-    private static int idCounter = 1;
+    private static int idCounter = 0;
     private int id;
     private String titolo;
     private int annoPubblicazione;

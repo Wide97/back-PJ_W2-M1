@@ -5,10 +5,7 @@ import marcowidesott.files.Gioco;
 import marcowidesott.files.GiocoDaTavolo;
 import marcowidesott.files.Videogioco;
 
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Application {
 
@@ -31,6 +28,7 @@ public class Application {
             System.out.println("Scecgli un' opzione:");
             System.out.println("1: Aggiungi un gioco");
             System.out.println("2: Visualizza giochi");
+            System.out.println("3: Cerca un gioco per id");
             System.out.println("0: Esci");
             int scelta = scanner.nextInt();
             scanner.nextLine();
@@ -41,6 +39,8 @@ public class Application {
                 break;
             } else if (scelta == 2) {
                 visualizzaGiochi();
+            } else if (scelta == 3) {
+                cercaGiocoPerId();
             } else {
                 System.out.println("Opazione non valida.");
             }
@@ -125,6 +125,22 @@ public class Application {
             for (Gioco gioco : giochi) {
                 gioco.descrizione();
             }
+        }
+    }
+
+    public static void cercaGiocoPerId() {
+        System.out.println("Inserisci l' id del gioco da cercare: ");
+        int idRicerca = scanner.nextInt();
+        scanner.nextLine();
+
+        Optional<Gioco> giocotrovato = giochi.stream()
+                .filter(g -> g.getId() == idRicerca)
+                .findFirst();
+        if (giocotrovato.isPresent()) {
+            System.out.println("Gioco trovato: ");
+            giocotrovato.get().descrizione();
+        } else {
+            System.out.println("Nessun gioco trovato con id: " + idRicerca);
         }
     }
 }
