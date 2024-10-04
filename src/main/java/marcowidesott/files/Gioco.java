@@ -7,7 +7,7 @@ public abstract class Gioco {
     private int annoPubblicazione;
     private double prezzo;
 
-    public Gioco(int id, String titolo, int annoPubblicazione, double prezzo) {
+    public Gioco(String titolo, int annoPubblicazione, double prezzo) {
         this.id = idCounter++;
         this.titolo = titolo;
         this.annoPubblicazione = annoPubblicazione;
