@@ -18,8 +18,16 @@ public class GiocoDaTavolo extends Gioco {
         return numeroGiocatori;
     }
 
+    public void setNumGiocatori(int numGiocatori) {
+        this.numeroGiocatori = numGiocatori;
+    }
+
     public int getDurataMedia() {
         return durataMedia;
+    }
+
+    public void setDurataMedia(int durataMedia) {
+        this.durataMedia = durataMedia;
     }
 
     @Override

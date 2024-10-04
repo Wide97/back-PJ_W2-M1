@@ -17,8 +17,10 @@ public class Application {
 
         giochi.add(new Videogioco("Call Of Duty: Black Ops 6", 2024, 79.99, "PC", 120, Genere.FPS));
         giochi.add(new Videogioco("Fifa 25", 2024, 69.99, "PS5", 60, Genere.SPORT));
+        giochi.add(new Videogioco("Assassin' s Creed", 2019, 49.99, "PS5", 80, Genere.AVVENTURA));
         giochi.add(new GiocoDaTavolo("Risiko", 1960, 28.99, 6, 240));
         giochi.add(new GiocoDaTavolo("Monopoly", 1945, 35.99, 4, 120));
+        giochi.add(new GiocoDaTavolo("Taboo", 1970, 19.99, 8, 100));
 
         for (Gioco gioco : giochi) {
             gioco.descrizione();
@@ -32,6 +34,7 @@ public class Application {
             System.out.println("4:Cerca un gioco per prezzo");
             System.out.println("5: cerca un gioco per numero di giocatori");
             System.out.println("6: rimuovi gioco");
+            System.out.println("7: Aggiorna gioco");
             System.out.println("0: Esci");
             int scelta = scanner.nextInt();
             scanner.nextLine();
@@ -50,6 +53,8 @@ public class Application {
                 cercaGiocoDaTavoloPerGiocatori();
             } else if (scelta == 6) {
                 rimuoviGioco();
+            } else if (scelta == 7) {
+                aggiornaGioco();
             } else {
                 System.out.println("Opazione non valida.");
             }
@@ -199,6 +204,75 @@ public class Application {
             System.out.println("Gioco con id " + idDaRimuovere + "rimosso.");
         } else {
             System.out.println("Nessun gioco trovato con id " + idDaRimuovere);
+        }
+    }
+
+    public static void aggiornaGioco() {
+        try {
+
+
+            System.out.println("Inserisci l' id del gioco da modificare: ");
+            int idDaAggiornare = scanner.nextInt();
+
+            Optional<Gioco> giocoOptional = giochi.stream()
+                    .filter(gioco -> gioco.getId() == idDaAggiornare)
+                    .findFirst();
+
+            if (giocoOptional.isPresent()) {
+                Gioco giocoDaAggiornare = giocoOptional.get();
+
+                System.out.println("Inserisci il nuovo titolo (attuale: " + giocoDaAggiornare.getTitolo() + "): ");
+                String nuovoTitolo = scanner.next();
+                scanner.nextLine();
+                System.out.print("Inserisci il nuovo anno di pubblicazione (attuale: " + giocoDaAggiornare.getAnnoPubblicazione() + "): ");
+                int nuovoAnno = scanner.nextInt();
+                System.out.print("Inserisci il nuovo prezzo (attuale: " + giocoDaAggiornare.getPrezzo() + "): ");
+                double nuovoPrezzo = scanner.nextDouble();
+
+                if (giocoDaAggiornare instanceof Videogioco) {
+                    System.out.println("Inserisci la nuova piattaforma: ");
+                    String nuovaPiattaforma = scanner.nextLine();
+                    scanner.nextLine();
+                    System.out.println("Inserisci la nuova durata (in ore): ");
+                    int nuovaDurata = scanner.nextInt();
+                    scanner.nextLine();
+                    System.out.println("Inserisci il nuovo genere: ");
+                    Genere nuovoGenere = Genere.valueOf(scanner.next().toUpperCase());
+                    scanner.nextLine();
+
+                    giocoDaAggiornare.setTitolo(nuovoTitolo);
+                    giocoDaAggiornare.setAnnoPubblicazione(nuovoAnno);
+                    giocoDaAggiornare.setPrezzo(nuovoPrezzo);
+                    ((Videogioco) giocoDaAggiornare).setPiattaforma(nuovaPiattaforma);
+                    ((Videogioco) giocoDaAggiornare).setDurata(nuovaDurata);
+                    ((Videogioco) giocoDaAggiornare).setGenere(nuovoGenere);
+                } else if (giocoDaAggiornare instanceof GiocoDaTavolo) {
+                    System.out.println("Inserisci il nuovo numero di giocatori: ");
+                    int nuovoNumeroGiocaotri = scanner.nextInt();
+                    scanner.nextLine();
+                    System.out.println("Inserisci la nuova durata media: ");
+                    int nuovaDurataMedia = scanner.nextInt();
+                    scanner.nextLine();
+
+                    giocoDaAggiornare.setTitolo(nuovoTitolo);
+                    giocoDaAggiornare.setAnnoPubblicazione(nuovoAnno);
+                    giocoDaAggiornare.setPrezzo(nuovoPrezzo);
+                    ((GiocoDaTavolo) giocoDaAggiornare).setNumGiocatori(nuovoNumeroGiocaotri);
+                    ((GiocoDaTavolo) giocoDaAggiornare).setDurataMedia(nuovaDurataMedia);
+
+                }
+
+                System.out.println("Gioco aggiornato con successo ");
+            } else {
+                System.out.println("Nessun gioco trovato con id fornito ");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Errore di input. Assicurati di inserire i dati nel formato corretto.");
+            scanner.next();
+        } catch (IllegalArgumentException e) {
+            System.out.println("Errore: Genere non valido. Assicurati di inserire un genere corretto.");
+        } catch (Exception e) {
+            System.out.println("Si è verificato un errore imprevisto: " + e.getMessage());
         }
     }
 }

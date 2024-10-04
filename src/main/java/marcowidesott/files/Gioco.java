@@ -22,8 +22,16 @@ public abstract class Gioco {
         return titolo;
     }
 
+    public void setTitolo(String titolo) {
+        this.titolo = titolo;
+    }
+
     public int getAnnoPubblicazione() {
         return annoPubblicazione;
+    }
+
+    public void setAnnoPubblicazione(int annoPubblicazione) {
+        this.annoPubblicazione = annoPubblicazione;
     }
 
     public double getPrezzo() {
