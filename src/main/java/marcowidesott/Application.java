@@ -31,7 +31,7 @@ public class Application {
             System.out.println("1: Aggiungi un gioco");
             System.out.println("2: Visualizza giochi");
             System.out.println("3: Cerca un gioco per id");
-            System.out.println("4:Cerca un gioco per prezzo");
+            System.out.println("4: Cerca un gioco per prezzo");
             System.out.println("5: cerca un gioco per numero di giocatori");
             System.out.println("6: rimuovi gioco");
             System.out.println("7: Aggiorna gioco");
@@ -64,146 +64,186 @@ public class Application {
     }
 
     private static void aggiungiGioco() {
-        System.out.print("Scegli il tipo di gioco da aggiungere (1: Videogioco, 2: Gioco da Tavolo): ");
-        int tipoGioco = scanner.nextInt();
-        scanner.nextLine();
+        try {
 
-        System.out.print("Inserisci il titolo del gioco: ");
-        String titolo = scanner.nextLine();
 
-        System.out.print("Inserisci l'anno di pubblicazione: ");
-        int annoPubblicazione = scanner.nextInt();
+            System.out.print("Scegli il tipo di gioco da aggiungere (1: Videogioco, 2: Gioco da Tavolo): ");
+            int tipoGioco = scanner.nextInt();
+            scanner.nextLine();
 
-        double prezzo = 0;
-        boolean prezzoValido = false;
+            System.out.print("Inserisci il titolo del gioco: ");
+            String titolo = scanner.nextLine();
 
-        while (!prezzoValido) {
-            try {
-                System.out.print("Inserisci il prezzo: ");
-                prezzo = scanner.nextDouble();
-                prezzoValido = true;
-            } catch (InputMismatchException e) {
-                System.out.println("Prezzo non valido. Inserisci un numero valido (es. 89.99).");
-                scanner.next();
+            System.out.print("Inserisci l'anno di pubblicazione: ");
+            int annoPubblicazione = scanner.nextInt();
+
+            double prezzo = 0;
+            boolean prezzoValido = false;
+
+            while (!prezzoValido) {
+                try {
+                    System.out.print("Inserisci il prezzo: ");
+                    prezzo = scanner.nextDouble();
+                    prezzoValido = true;
+                } catch (InputMismatchException e) {
+                    System.out.println("Prezzo non valido. Inserisci un numero valido (es. 89.99).");
+                    scanner.next();
+                }
             }
-        }
 
-        System.out.print("Inserisci l'ID del gioco: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
-
-        boolean exists = giochi.stream().anyMatch(g -> g.getId() == id);
-        if (exists) {
-            System.out.println("Errore: Esiste già un gioco con ID " + id);
-            return;
-        }
-
-        if (tipoGioco == 1) {
-            System.out.println("Inserisci la piattaforma: ");
-            String piattaforma = scanner.nextLine();
-
-
-            System.out.println("inserisci la durata del gioco (in ore): ");
-            int durata = scanner.nextInt();
+            System.out.print("Inserisci l'ID del gioco: ");
+            int id = scanner.nextInt();
             scanner.nextLine();
 
-            System.out.println("Inserisci il genere (RPG, FPS, STRATEGIA, AVVENTURA, PUZZLE, SPORT): ");
-            String genereInput = scanner.nextLine();
-            Genere genere = Genere.valueOf(genereInput.toUpperCase());
+            boolean exists = giochi.stream().anyMatch(g -> g.getId() == id);
+            if (exists) {
+                System.out.println("Errore: Esiste già un gioco con ID " + id);
+                return;
+            }
 
-            giochi.add(new Videogioco(titolo, annoPubblicazione, prezzo, piattaforma, durata, genere));
-            System.out.println("Videogioco aggiunto con successo");
-        } else if (tipoGioco == 2) {
-            System.out.println("Inserisci il numero di giocatori (da 2 a 10): ");
-            int numeroGiocatori = scanner.nextInt();
-            scanner.nextLine();
+            if (tipoGioco == 1) {
+                System.out.println("Inserisci la piattaforma: ");
+                String piattaforma = scanner.nextLine();
 
-            System.out.println("Inserisci la durata della partita (in minuti): ");
-            int durataMediaPartita = scanner.nextInt();
-            scanner.nextLine();
 
-            giochi.add(new GiocoDaTavolo(titolo, annoPubblicazione, prezzo, numeroGiocatori, durataMediaPartita));
-            System.out.println("Gioco da tavolo aggiunto!");
-        } else {
-            System.out.println("Tipo di gioco non valido");
+                System.out.println("inserisci la durata del gioco (in ore): ");
+                int durata = scanner.nextInt();
+                scanner.nextLine();
+
+                System.out.println("Inserisci il genere (RPG, FPS, STRATEGIA, AVVENTURA, PUZZLE, SPORT): ");
+                String genereInput = scanner.nextLine();
+                Genere genere = Genere.valueOf(genereInput.toUpperCase());
+
+                giochi.add(new Videogioco(titolo, annoPubblicazione, prezzo, piattaforma, durata, genere));
+                System.out.println("Videogioco aggiunto con successo");
+            } else if (tipoGioco == 2) {
+                System.out.println("Inserisci il numero di giocatori (da 2 a 10): ");
+                int numeroGiocatori = scanner.nextInt();
+                scanner.nextLine();
+
+                System.out.println("Inserisci la durata della partita (in minuti): ");
+                int durataMediaPartita = scanner.nextInt();
+                scanner.nextLine();
+
+                giochi.add(new GiocoDaTavolo(titolo, annoPubblicazione, prezzo, numeroGiocatori, durataMediaPartita));
+                System.out.println("Gioco da tavolo aggiunto!");
+            } else {
+                System.out.println("Tipo di gioco non valido");
+            }
+        } catch (Exception e) {
+            System.out.println("Errore: " + e.getMessage());
         }
 
 
     }
 
     public static void visualizzaGiochi() {
-        if (giochi.isEmpty()) {
-            System.out.println("Nessun gioco nella collection");
-        } else {
-            System.out.println("Giochi nella collection: ");
-            for (Gioco gioco : giochi) {
-                gioco.descrizione();
+        try {
+
+
+            if (giochi.isEmpty()) {
+                System.out.println("Nessun gioco nella collection");
+            } else {
+                System.out.println("Giochi nella collection: ");
+                for (Gioco gioco : giochi) {
+                    gioco.descrizione();
+                }
             }
+        } catch (Exception e) {
+            System.out.println("Errore: " + e.getMessage());
         }
     }
 
     public static void cercaGiocoPerId() {
-        System.out.println("Inserisci l' id del gioco da cercare: ");
-        int idRicerca = scanner.nextInt();
-        scanner.nextLine();
+        try {
 
-        Optional<Gioco> giocotrovato = giochi.stream()
-                .filter(g -> g.getId() == idRicerca)
-                .findFirst();
-        if (giocotrovato.isPresent()) {
-            System.out.println("Gioco trovato: ");
-            giocotrovato.get().descrizione();
-        } else {
-            System.out.println("Nessun gioco trovato con id: " + idRicerca);
+
+            System.out.println("Inserisci l' id del gioco da cercare: ");
+            int idRicerca = scanner.nextInt();
+            scanner.nextLine();
+
+            Optional<Gioco> giocotrovato = giochi.stream()
+                    .filter(g -> g.getId() == idRicerca)
+                    .findFirst();
+            if (giocotrovato.isPresent()) {
+                System.out.println("Gioco trovato: ");
+                giocotrovato.get().descrizione();
+            } else {
+                System.out.println("Nessun gioco trovato con id: " + idRicerca);
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Errore di input.");
+            scanner.next();
         }
     }
 
     public static void cercaGiocoPerPrezzo() {
-        System.out.println("Inserisci il prezzo massimo: ");
-        double prezzoMax = scanner.nextDouble();
+        try {
 
-        List<Gioco> giochiTrovati = giochi.stream()
-                .filter(gioco -> gioco.getPrezzo() < prezzoMax)
-                .toList();
 
-        if (giochiTrovati.isEmpty()) {
-            System.out.println("Nessun gioco trovato von prezzo inferiore a " + prezzoMax);
-        } else {
-            System.out.println("Giochi trovati von prezzo inferiore a " + prezzoMax + ": ");
-            for (Gioco gioco : giochiTrovati) {
-                gioco.descrizione();
+            System.out.println("Inserisci il prezzo massimo: ");
+            double prezzoMax = scanner.nextDouble();
+
+            List<Gioco> giochiTrovati = giochi.stream()
+                    .filter(gioco -> gioco.getPrezzo() < prezzoMax)
+                    .toList();
+
+            if (giochiTrovati.isEmpty()) {
+                System.out.println("Nessun gioco trovato von prezzo inferiore a " + prezzoMax);
+            } else {
+                System.out.println("Giochi trovati von prezzo inferiore a " + prezzoMax + ": ");
+                for (Gioco gioco : giochiTrovati) {
+                    gioco.descrizione();
+                }
             }
+        } catch (InputMismatchException e) {
+            System.out.println("Errore di input.");
+            scanner.next();
         }
     }
 
     private static void cercaGiocoDaTavoloPerGiocatori() {
-        System.out.println("Inserisci il numero massimo di giocatori: ");
-        int numGiocatoriMax = scanner.nextInt();
+        try {
 
-        List<Gioco> giochiTrovati = giochi.stream()
-                .filter(gioco -> gioco instanceof GiocoDaTavolo && ((GiocoDaTavolo) gioco).getNumeroGiocatori() <= numGiocatoriMax)
-                .toList();
 
-        if (giochiTrovati.isEmpty()) {
-            System.out.println("Nessun gioco da tavolo trovato con max " + numGiocatoriMax);
-        } else {
-            System.out.println("giochi da tavolo trovati con mac giocaotri " + numGiocatoriMax + ": ");
-            for (Gioco gioco : giochiTrovati) {
-                gioco.descrizione();
+            System.out.println("Inserisci il numero massimo di giocatori: ");
+            int numGiocatoriMax = scanner.nextInt();
+
+            List<Gioco> giochiTrovati = giochi.stream()
+                    .filter(gioco -> gioco instanceof GiocoDaTavolo && ((GiocoDaTavolo) gioco).getNumeroGiocatori() <= numGiocatoriMax)
+                    .toList();
+
+            if (giochiTrovati.isEmpty()) {
+                System.out.println("Nessun gioco da tavolo trovato con max " + numGiocatoriMax);
+            } else {
+                System.out.println("giochi da tavolo trovati con mac giocaotri " + numGiocatoriMax + ": ");
+                for (Gioco gioco : giochiTrovati) {
+                    gioco.descrizione();
+                }
             }
+        } catch (InputMismatchException e) {
+            System.out.println("Errore di input.");
+            scanner.next();
         }
     }
 
     private static void rimuoviGioco() {
-        System.out.println("Inserisci l' id del gioco da rimuovere: ");
-        int idDaRimuovere = scanner.nextInt();
+        try {
 
-        boolean rimosso = giochi.removeIf(gioco -> gioco.getId() == idDaRimuovere);
 
-        if (rimosso) {
-            System.out.println("Gioco con id " + idDaRimuovere + "rimosso.");
-        } else {
-            System.out.println("Nessun gioco trovato con id " + idDaRimuovere);
+            System.out.println("Inserisci l' id del gioco da rimuovere: ");
+            int idDaRimuovere = scanner.nextInt();
+
+            boolean rimosso = giochi.removeIf(gioco -> gioco.getId() == idDaRimuovere);
+
+            if (rimosso) {
+                System.out.println("Gioco con id " + idDaRimuovere + "rimosso.");
+            } else {
+                System.out.println("Nessun gioco trovato con id " + idDaRimuovere);
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Errore di input.");
+            scanner.next();
         }
     }
 
