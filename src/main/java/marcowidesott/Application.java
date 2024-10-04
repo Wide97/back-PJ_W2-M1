@@ -31,6 +31,7 @@ public class Application {
             System.out.println("3: Cerca un gioco per id");
             System.out.println("4:Cerca un gioco per prezzo");
             System.out.println("5: cerca un gioco per numero di giocatori");
+            System.out.println("6: rimuovi gioco");
             System.out.println("0: Esci");
             int scelta = scanner.nextInt();
             scanner.nextLine();
@@ -47,6 +48,8 @@ public class Application {
                 cercaGiocoPerPrezzo();
             } else if (scelta == 5) {
                 cercaGiocoDaTavoloPerGiocatori();
+            } else if (scelta == 6) {
+                rimuoviGioco();
             } else {
                 System.out.println("Opazione non valida.");
             }
@@ -183,6 +186,19 @@ public class Application {
             for (Gioco gioco : giochiTrovati) {
                 gioco.descrizione();
             }
+        }
+    }
+
+    private static void rimuoviGioco() {
+        System.out.println("Inserisci l' id del gioco da rimuovere: ");
+        int idDaRimuovere = scanner.nextInt();
+
+        boolean rimosso = giochi.removeIf(gioco -> gioco.getId() == idDaRimuovere);
+
+        if (rimosso) {
+            System.out.println("Gioco con id " + idDaRimuovere + "rimosso.");
+        } else {
+            System.out.println("Nessun gioco trovato con id " + idDaRimuovere);
         }
     }
 }
